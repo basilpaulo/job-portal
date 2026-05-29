@@ -29,11 +29,13 @@ A full-stack job portal built with React, Redux, Express, Sequelize, and Postgre
 2. Copy `.env.example` if present, or create `.env` with values like:
 
 ```env
-DATABASE_URL=postgres://user:password@host:5432/dbname
-JWT_ACCESS_SECRET=replace-with-strong-secret
-JWT_REFRESH_SECRET=replace-with-strong-secret
-PORT=5000
 NODE_ENV=development
+PORT=5000
+DATABASE_URL=postgresql://neondb_owner:npg_Q2wfairSNLJ5@ep-rapid-field-ap78h40y-pooler.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+JWT_ACCESS_SECRET=your_super_secret_access_key_here_min_32_chars
+JWT_REFRESH_SECRET=your_super_secret_refresh_key_here_min_32_chars
+JWT_ACCESS_EXPIRES=15m
+JWT_REFRESH_EXPIRES=7d
 CLIENT_URL=http://localhost:3000
 ```
 
@@ -70,6 +72,8 @@ npm install
 ```env
 REACT_APP_API_URL=http://localhost:5000/api
 ```
+
+This matches the current local frontend environment value.
 
 4. Start the development server:
 
