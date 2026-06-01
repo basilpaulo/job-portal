@@ -36,7 +36,8 @@ const Navbar = () => {
 
   const navLinks = [
     { label: 'Home', path: '/' },
-    { label: 'Jobs', path: '/jobs' }
+    { label: 'Jobs', path: '/jobs' },
+    ...(isAdmin ? [{ label: 'Admin Dashboard', path: '/admin/dashboard' }] : [])
   ];
 
   return (
@@ -92,15 +93,7 @@ const Navbar = () => {
                       <p className="text-xs text-gray-500">{user?.email}</p>
                     </div>
 
-                    {isAdmin ? (
-                      <Link
-                        to="/admin/dashboard"
-                        onClick={() => setDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      >
-                        Admin Dashboard
-                      </Link>
-                    ) : (
+                    {!isAdmin && (
                       <Link
                         to="/my-applications"
                         onClick={() => setDropdownOpen(false)}
@@ -176,11 +169,7 @@ const Navbar = () => {
             <div className="pt-2 border-t border-gray-200">
               {isAuthenticated ? (
                 <>
-                  {isAdmin ? (
-                    <Link to="/admin/dashboard" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
-                      Admin Dashboard
-                    </Link>
-                  ) : (
+                  {!isAdmin && (
                     <Link to="/my-applications" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">
                       My Applications
                     </Link>

@@ -13,6 +13,8 @@ import RegisterPage from './pages/RegisterPage';
 import MyApplicationsPage from './pages/MyApplicationsPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminJobsPage from './pages/AdminJobsPage';
+import AdminCreateJobPage from './pages/AdminCreateJobPage';
+import AdminEditJobPage from './pages/AdminEditJobPage';
 import AdminApplicationsPage from './pages/AdminApplicationsPage';
 import FooterLinkPage from './pages/FooterLinkPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -104,6 +106,28 @@ const App = () => {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <AdminJobsPage />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/jobs/new"
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <AdminCreateJobPage />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/jobs/:id/edit"
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <AdminEditJobPage />
             </AdminLayout>
           </ProtectedRoute>
         }

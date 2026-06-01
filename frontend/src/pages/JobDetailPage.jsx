@@ -71,6 +71,7 @@ const JobDetailPage = () => {
   }
 
   const alreadyApplied = submitted || hasApplied;
+  const canApply = isAuthenticated && user?.role !== 'admin';
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -155,20 +156,28 @@ const JobDetailPage = () => {
           </div>
 
           {isAuthenticated ? (
-            <div className="border border-gray-200 rounded-xl p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-gray-900">Apply for this role</p>
-                  <p className="text-xs text-gray-500 mt-1">Logged in as {user?.name}</p>
-                </div>
-                {alreadyApplied ? <CheckCircleIcon className="h-5 w-5 text-green-500" /> : null}
-              </div>
+            user?.role === 'admin' ? null : (
+              <div className="border border-gray-200 rounded-xl p-4">
+                {alreadyApplied ? (
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="font-semibold text-gray-900">Application Status</p>
+                      <p className="text-xs text-gray-500 mt-1">Logged in as {user?.name}</p>
+                    </div>
+                    <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                  </div>
+                ) : (
+                  <div>
+                    <p className="font-semibold text-gray-900">Apply for this role</p>
+                    <p className="text-xs text-gray-500 mt-1">Logged in as {user?.name}</p>
+                  </div>
+                )}
 
-              {alreadyApplied ? (
-                <div className="mt-4 rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-700">
-                  You have already applied for this job. Keep an eye on your application status.
-                </div>
-              ) : (
+                {alreadyApplied ? (
+                  <div className="rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-700">
+                    You have already applied for this job. Keep an eye on your application status.
+                  </div>
+                ) : (
                 <form className="mt-4 space-y-3" onSubmit={handleApply}>
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Cover letter</label>
@@ -177,16 +186,16 @@ const JobDetailPage = () => {
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="block text-xs font-medium text-gray-600 mb-1">Experience</label>
-<input type="number" name="years_of_experience" min="0" value={form.years_of_experience} onChange={handleChange} className="input-field" placeholder="Years" required disabled={isApplying} />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">Expected salary</label>
-                  <input type="number" name="expected_salary" min="0" value={form.expected_salary} onChange={handleChange} className="input-field" placeholder="USD" required disabled={isApplying} />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1">Resume link</label>
-                <input type="url" name="resume_url" value={form.resume_url} onChange={handleChange} className="input-field" placeholder="https://example.com/resume.pdf" required={!form.resumeFile} disabled={isApplying} />
+                      <input type="number" name="years_of_experience" min="0" value={form.years_of_experience} onChange={handleChange} className="input-field" placeholder="Years" required disabled={isApplying} />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Expected salary</label>
+                      <input type="number" name="expected_salary" min="0" value={form.expected_salary} onChange={handleChange} className="input-field" placeholder="USD" required disabled={isApplying} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Resume link</label>
+                    <input type="url" name="resume_url" value={form.resume_url} onChange={handleChange} className="input-field" placeholder="https://example.com/resume.pdf" required={!form.resumeFile} disabled={isApplying} />
                   </div>
 
                   <div>
@@ -211,6 +220,7 @@ const JobDetailPage = () => {
                 </form>
               )}
             </div>
+            )
           ) : (
             <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-sm text-gray-600">
               <p className="font-semibold text-gray-900">Sign in to apply</p>

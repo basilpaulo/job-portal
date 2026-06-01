@@ -13,6 +13,10 @@ const applyForJob = async (req, res) => {
       return errorResponse(res, 'Job not found', 404);
     }
 
+    if (req.user.role === 'admin') {
+      return errorResponse(res, 'Administrators cannot apply for jobs', 403);
+    }
+
     if (job.status !== 'active') {
       return errorResponse(res, 'This job is not accepting applications', 400);
     }
