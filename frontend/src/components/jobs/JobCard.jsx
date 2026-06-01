@@ -98,13 +98,13 @@ const JobCard = ({ job, showActions = false, onEdit, onDelete, onStatusChange })
               <div className="flex gap-2">
                 <button
                   onClick={() => onEdit(job)}
-                  className="text-xs px-3 py-1.5 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors font-medium"
+                  className="text-xs px-3 py-1.5 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors font-medium cursor-pointer"
                 >
                   Edit
                 </button>
                 <button
-                  onClick={() => onDelete(job.id)}
-                  className="text-xs px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+                  onClick={() => onDelete(job.id, job.title)}
+                  className="text-xs px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium cursor-pointer"
                 >
                   Delete
                 </button>

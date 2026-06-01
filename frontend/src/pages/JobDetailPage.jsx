@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { MapPinIcon, BuildingOfficeIcon, CurrencyDollarIcon, ClockIcon, UsersIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { fetchJobById, clearSelectedJob, selectSelectedJob, selectJobLoading, selectHasApplied } from '../store/slices/jobsSlice';
-import { applyForJob } from '../store/slices/applicationsSlice';
+import { applyForJob, selectIsApplying } from '../store/slices/applicationsSlice';
 import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Badge from '../components/common/Badge';
@@ -23,6 +23,7 @@ const JobDetailPage = () => {
   const selectedJob = useSelector(selectSelectedJob);
   const isJobLoading = useSelector(selectJobLoading);
   const hasApplied = useSelector(selectHasApplied);
+  const isApplying = useSelector(selectIsApplying);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
 
@@ -171,30 +172,42 @@ const JobDetailPage = () => {
                 <form className="mt-4 space-y-3" onSubmit={handleApply}>
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Cover letter</label>
-                    <textarea name="cover_letter" rows="4" value={form.cover_letter} onChange={handleChange} className="input-field" placeholder="Tell us why you're a great fit" required />
+                    <textarea name="cover_letter" rows="4" value={form.cover_letter} onChange={handleChange} className="input-field" placeholder="Tell us why you're a great fit" required disabled={isApplying} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="block text-xs font-medium text-gray-600 mb-1">Experience</label>
-                      <input type="number" name="years_of_experience" min="0" value={form.years_of_experience} onChange={handleChange} className="input-field" placeholder="Years" required />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">Expected salary</label>
-                      <input type="number" name="expected_salary" min="0" value={form.expected_salary} onChange={handleChange} className="input-field" placeholder="USD" required />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">Resume link</label>
-                    <input type="url" name="resume_url" value={form.resume_url} onChange={handleChange} className="input-field" placeholder="https://example.com/resume.pdf" required={!form.resumeFile} />
+<input type="number" name="years_of_experience" min="0" value={form.years_of_experience} onChange={handleChange} className="input-field" placeholder="Years" required disabled={isApplying} />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Expected salary</label>
+                  <input type="number" name="expected_salary" min="0" value={form.expected_salary} onChange={handleChange} className="input-field" placeholder="USD" required disabled={isApplying} />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Resume link</label>
+                <input type="url" name="resume_url" value={form.resume_url} onChange={handleChange} className="input-field" placeholder="https://example.com/resume.pdf" required={!form.resumeFile} disabled={isApplying} />
                   </div>
 
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Upload resume file</label>
-                    <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileChange} className="input-field file:mr-4 file:rounded-full file:border-0 file:bg-primary-600 file:px-3 file:py-1 file:text-sm file:font-semibold file:text-white" />
+                    <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileChange} className="input-field file:mr-4 file:rounded-full file:border-0 file:bg-primary-600 file:px-3 file:py-1 file:text-sm file:font-semibold file:text-white" disabled={isApplying} />
                     {form.resumeFile && <p className="mt-1 text-xs text-gray-500">Selected file: {form.resumeFile.name}</p>}
                   </div>
 
-                  <button type="submit" className="btn-primary w-full">Submit Application</button>
+                  <button type="submit" className="btn-primary w-full" disabled={isApplying}>
+                    {isApplying ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Submitting...
+                      </span>
+                    ) : (
+                      'Submit Application'
+                    )}
+                  </button>
                 </form>
               )}
             </div>

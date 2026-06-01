@@ -178,9 +178,16 @@ const adminSlice = createSlice({
       });
 
     builder
+      .addCase(deleteJob.pending, (state) => {
+        state.isSubmitting = true;
+      })
       .addCase(deleteJob.fulfilled, (state, action) => {
+        state.isSubmitting = false;
         state.jobs = state.jobs.filter(j => j.id !== action.payload);
         state.pagination.totalItems -= 1;
+      })
+      .addCase(deleteJob.rejected, (state) => {
+        state.isSubmitting = false;
       });
 
     builder

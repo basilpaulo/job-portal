@@ -132,7 +132,7 @@ const createJob = async (req, res) => {
       skills: Array.isArray(skills) ? skills : skills?.split(',').map(s => s.trim()) || [],
       benefits: Array.isArray(benefits) ? benefits : benefits?.split(',').map(b => b.trim()) || [],
       status: status || 'active',
-      deadline,
+      deadline: deadline || null,
       openings: openings || 1,
       is_featured: is_featured || false,
       admin_id: req.user.id
@@ -161,6 +161,9 @@ const updateJob = async (req, res) => {
     }
     if (updateData.benefits && !Array.isArray(updateData.benefits)) {
       updateData.benefits = updateData.benefits.split(',').map(b => b.trim());
+    }
+    if ('deadline' in updateData && !updateData.deadline) {
+      updateData.deadline = null;
     }
 
     await job.update(updateData);

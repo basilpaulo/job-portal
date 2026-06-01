@@ -120,7 +120,7 @@ const authSlice = createSlice({
         state.refreshToken = action.payload.refreshToken;
         state.isAuthenticated = true;
         state.error = null;
-        toast.success(`Welcome back, ${action.payload.user.name}!`);
+        toast.success(`Welcome back, ${action.payload.user.name}!`, { duration: 2000 });
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;

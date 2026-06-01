@@ -5,6 +5,20 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import EmptyState from '../components/common/EmptyState';
 import Pagination from '../components/common/Pagination';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const BACKEND_BASE_URL = API_BASE_URL.replace(/\/api\/?$/, '');
+
+const resolveResumeUrl = (resumeUrl) => {
+  if (!resumeUrl) return '';
+  if (resumeUrl.startsWith('http://') || resumeUrl.startsWith('https://')) {
+    return resumeUrl;
+  }
+  if (resumeUrl.startsWith('/')) {
+    return `${BACKEND_BASE_URL}${resumeUrl}`;
+  }
+  return `${BACKEND_BASE_URL}/${resumeUrl}`;
+};
+
 const MyApplicationsPage = () => {
   const dispatch = useDispatch();
   const myApplications = useSelector((state) => state.applications.myApplications);
@@ -52,7 +66,7 @@ const MyApplicationsPage = () => {
               {application.resume_url && (
                 <div className="mt-3 rounded-lg bg-primary-50 border border-primary-100 p-3 text-sm text-primary-700">
                   <span className="font-semibold">Resume:</span>{' '}
-                  <a href={application.resume_url} target="_blank" rel="noreferrer" className="underline hover:text-primary-800">View uploaded resume</a>
+                  <a href={resolveResumeUrl(application.resume_url)} target="_blank" rel="noreferrer" className="underline hover:text-primary-800">View uploaded resume</a>
                 </div>
               )}
             </article>

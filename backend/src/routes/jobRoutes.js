@@ -38,7 +38,8 @@ const jobValidation = [
   body('location').trim().notEmpty().withMessage('Location is required'),
   body('salary_min').optional().isNumeric().withMessage('Salary must be a number'),
   body('salary_max').optional().isNumeric().withMessage('Salary must be a number'),
-  body('openings').optional().isInt({ min: 1 }).withMessage('Must have at least 1 opening')
+  body('openings').optional().isInt({ min: 1 }).withMessage('Must have at least 1 opening'),
+  body('deadline').optional({ checkFalsy: true }).isISO8601().withMessage('Deadline must be a valid date')
 ];
 
 // Admin routes
